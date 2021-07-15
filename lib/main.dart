@@ -8,6 +8,9 @@ class MyApp extends StatelessWidget {
     const String _title = 'Alucard Login Form';
     return MaterialApp(
       title: _title,
+      theme: ThemeData(
+        primaryColor: Colors.lightBlue,
+      ),
       home: Homepage(),
       debugShowCheckedModeBanner: false,
     );
@@ -17,10 +20,42 @@ class MyApp extends StatelessWidget {
 class Homepage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
 
+  Widget inputUser(String hintTxt, String errorText) {
+    return Padding(
+      padding: EdgeInsets.all(10),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: new BorderRadius.circular(20.0),
+          border: Border.all(color: Colors.blueAccent),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(
+            left: 15,
+            right: 15,
+            top: 5,
+          ),
+          child: TextFormField(
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return errorText;
+              }
+              return null;
+            },
+            decoration: new InputDecoration(
+              hintText: hintTxt,
+              border: InputBorder.none,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         width: double.infinity,
         child: Column(
@@ -41,48 +76,13 @@ class Homepage extends StatelessWidget {
             Form(
               key: _formKey,
               child: Column(children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: new BorderRadius.circular(10.0),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        left: 15,
-                        right: 15,
-                        top: 5,
-                      ),
-                      // padding: const EdgeInsets.all(10),
-                      child: TextFormField(
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your email address';
-                          }
-                          return null;
-                        },
-                        decoration: const InputDecoration(
-                          labelText: 'Email *',
-                          hintText: 'Your email address',
-                        ),
-                      ),
-                    ),
-                  ),
+                inputUser(
+                  'Your email address',
+                  'Please enter your email address!',
                 ),
-                SizedBox(
-                  height: mediaQuery.size.height * 0.05,
-                ),
-                TextFormField(
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your email password';
-                    }
-                    return null;
-                  },
-                  decoration: const InputDecoration(
-                    labelText: 'Password *',
-                    hintText: 'Your email password',
-                  ),
+                inputUser(
+                  'Your email password',
+                  'Please enter your email password!',
                 ),
                 SizedBox(
                   height: mediaQuery.size.height * 0.05,
